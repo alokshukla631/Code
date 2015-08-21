@@ -1,0 +1,39 @@
+#include <stdafx.h>
+#include <string.h>
+#include <math.h>
+
+#define N 4
+
+void add(char a[], char b[], char sum[])
+{
+    int i = N-2;
+    int carryOver = 0;
+
+    while(i >= 0)
+    {
+        sum[i+1] = sum[i+1] + (a[i] - '0') + b[i] + carryOver;
+        if(sum[i+1] > '9')
+        {
+            sum[i+1] = sum[i+1] - 10;
+            carryOver = 1;
+        }
+        else
+        {
+            carryOver = 0;
+        }
+        i--;
+    }
+    sum[0] = '0' + carryOver;
+}
+
+
+
+int main() 
+{
+    char a[N] = "259";
+    char b[N] = "352";
+    char sum[N+1] = {'\0'};
+    add(a,b, sum);
+    printf("sum of %s and %s is = %s\n",a,b,sum);
+	return 0;
+}

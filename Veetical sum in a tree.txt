@@ -1,0 +1,83 @@
+                            1
+                     2              3
+                4       5       6       7
+              8   9      11  12          15
+
+
+
+Vertical sum Algo:
+// Take sum of a node->rightChild->leftChild + node->leftChild->rightChild and save it in the node value
+// continue till we cover all nodes
+// print all the nodes on the left and all the nodes on the right and root node
+
+
+
+int verticalSum(Mystruct *root)
+{
+	if(root == NULL)
+		return 0;
+
+	if(root->leftChild)
+	{
+		root->value += verticalSum(root->leftChild->rightChild);
+	}
+
+	if(root->rightChild)
+	{
+		root->value += verticalSum(root->rightChild->leftChild);
+	}
+
+	return root->value;
+}
+
+void printVerticalSumValues(Mystruct *root)
+{
+	Mystruct *temp;
+	temp = root;
+
+	while(temp)
+	{
+		printf("%d",temp->value);
+		temp = temp->leftChild;
+	}
+
+	temp = temp->rightChild;
+
+	while(temp)
+	{
+		printf("%d",temp->value);
+		temp = temp->rightChild;
+	}
+}
+
+// Call this function for all nodes that lie on left side of the tree
+// or on right side of the tree
+// or the root node
+void func(Mystruct *root)
+{
+	Mystruct *temp;
+	temp = root;
+
+	while(temp)
+	{
+		temp->value = verticalSum(temp); // we don't need to assign the return value of verticalSum to root->value here as it is already assigned
+		temp = temp->leftChild;
+	}
+
+	temp = temp->rightChild;
+
+	while(temp)
+	{
+		temp->value = verticalSum(temp); // we don't need to assign the return value of verticalSum to root->value here as it is already assigned
+		temp = temp->rightChild;
+	}
+}
+
+int main()
+{
+	Mystruct *root; // assuming we have already defined the Mystruct
+   	func(root);
+	printVerticalSumValues(root);
+	return 0;
+	
+}

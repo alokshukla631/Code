@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+
+// 
+#define MAX_LIMIT 4000000
+int main()
+{
+    int previous = 2;
+    int previousOfPrevious = 1;
+    int current = previousOfPrevious;
+    int sum = 0;
+    
+    while(current < MAX_LIMIT)
+    {
+        if(!(current%2))
+        {
+            sum += current;
+        }
+        previous = previousOfPrevious;
+        previousOfPrevious = current;
+        current = previous + previousOfPrevious;
+    }
+    
+    printf("%d\n",sum);
+
+    return 0;
+}
+

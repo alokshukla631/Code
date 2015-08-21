@@ -1,0 +1,33 @@
+#include <stdafx.h>
+
+long maxPrime(long num)
+{
+    int i = 1;
+    int maxPrime = 0;
+    while(i <= num)
+    {
+        //int a = (int)num/i;
+        if(!(num%i))
+        {
+            maxPrime = (maxPrime < i) ? i : maxPrime;
+            num = num/i;
+        }
+        i++;
+    }
+    return maxPrime;
+    
+}
+
+int main()
+{
+    printf("double = %d\n",sizeof(double));
+    printf("float = %d\n",sizeof(float));
+    printf("int = %d\n",sizeof(int));
+    printf("long = %d\n",sizeof(long));
+    
+	printf("%ld\n",maxPrime(600851475143));
+    
+	return 0;
+
+}
+

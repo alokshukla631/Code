@@ -1,0 +1,33 @@
+#include <stdafx.h>
+// program to convert a dll (doubly linked list) in to a balanced binary searched tree
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+int main() 
+{
+
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    int height = 0;
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    scanf("%d",&height);
+
+    for(i=height-1; i >=0; i--)
+    {
+        for(j=0; j<i; j++)
+        {
+            printf(" ");
+        }
+
+        for(k=0; k<height-j; k++)
+        {
+            printf("#");
+        }
+        printf("\n");
+    }
+    return 0;
+}
+

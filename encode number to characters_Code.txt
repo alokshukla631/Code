@@ -1,0 +1,56 @@
+#include <stdio.h>
+int len = 4;
+
+void encodeSingle(char *str[], int start)
+{
+	char *temp = *str;
+	temp[start] += ('a' - '1');
+}
+
+void encodeDouble(char *str[], int start)
+{
+	char *temp = *str;
+	if(temp[start] == '\0')
+	{
+        	return;
+	}
+
+	if(temp[start+1] != '\0')
+	{
+		if(temp[start] == '1')
+	{
+		temp[start] += ('j' - temp[start+1]);
+	}
+	else if(temp[start] == '2')
+	{
+		temp[start] += ('t' - temp[start+1]);
+	}
+	}
+
+	
+}
+
+void encodeString(char str[], int start, int end)
+{
+	if(start > end)
+	{
+		printf("%s\n",str);
+		return;
+	}
+
+	encodeSingle(&str, start);
+	encodeString(str, start+1, end);
+	
+	encodeDouble(&str, start);
+	encodeString(str, start+1, end);
+
+	
+	
+}
+
+int main()
+{
+	char a[] = "1234";
+	encodeString(a, 0, 3);
+	
+}

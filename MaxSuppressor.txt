@@ -1,0 +1,113 @@
+#include <stdafx.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+#define N 9
+
+struct node
+{
+    int data;
+    int numElementsInLeftSubTree; // We don't need this, but created just for the sake of symmetry
+    int numElementsInRightSubTree;
+    struct node *leftChild;
+    struct node *rightChild;
+    
+};
+
+void add(struct node **root, int num)
+{
+    struct node *temp = NULL, *r = *root, *q = NULL;
+
+    temp = (struct node *)malloc(sizeof(struct node));
+    temp->data = num;
+    temp->numElementsInLeftSubTree = 0;
+    temp->numElementsInRightSubTree = 0;
+    temp->leftChild = NULL;
+    temp->rightChild = NULL;
+
+    if(*root == NULL)
+    {
+        *root = temp;
+        return;
+    }
+
+    // find the right position for num
+    while(r)
+    {
+        q = r;
+        if(r->data < num)
+        {
+            // add to right subtree of r
+            r->numElementsInRightSubTree++;
+            r = r->rightChild;
+        }
+        else
+        {
+            // add to left subtree of r
+            r->numElementsInLeftSubTree++;
+            r = r->leftChild;
+        }
+    }
+
+    if(q->data < num)
+    {
+        // make it rightChild of q
+        q->rightChild = temp;
+    }
+    else
+    {
+        // make it leftChild of q
+        q->leftChild = temp;
+    }
+    
+
+    
+}
+
+void inorder(struct node *root, int *max)
+{
+    if(root == NULL)
+    {
+        return; // nothing to print
+    }
+
+    inorder(root->leftChild, max);
+    printf("%d,",root->data);
+    if(*max < root->numElementsInRightSubTree)
+    {
+        *max = root->numElementsInRightSubTree;
+    }
+    inorder(root->rightChild, max);
+}
+
+int maxNumElementsInRightSubTree(struct node *root)
+{
+    int max = 0;
+    inorder(root, &max);
+    return max;
+}
+
+int maxSuppresor(int *a)
+{
+    int i = 0;
+    struct node *root = NULL;
+
+    for(i=0; i<N; i++)
+    {
+        add(&root,a[i]);
+    }
+    
+    // print tree
+    //inorder(root);
+    //printf("\n");
+
+    return maxNumElementsInRightSubTree(root);
+}
+
+int main() 
+{
+    int a[N] = {2,7,5,5,2,7,0,8,1};
+    printf("max Supressor = %d\n",maxSuppresor(a));
+	return 0;
+}

@@ -1,0 +1,130 @@
+//Starting in the top left corner of a 2×2 grid, and only being able to move to the right and down, there are exactly 6 routes to the bottom right corner.
+//How many such routes are there through a 10×10 grid?
+#include <stdafx.h>
+#include <stdlib.h>
+
+// the grid is N-1 x N-1
+// so if N is 11 then it represents grid of 20x20
+#define N 4
+#define K N-1
+#define LEN (2*K)+1
+
+// This function does it in N^2 complexity
+int numOfRoutes1()
+{
+    int i=0, j=0;
+    // define a NxN grid and initialize to 0
+    // this grid represents the NxN grid
+    int a[N][N] = {0};
+
+    // set its all [r][N-1]the and [N-1][r]the elements as 1
+    // as from these ends there is only one way to reach to [N-1][N-1] point
+    for(i=0; i<N; i++)
+    {
+        a[i][N-1] = 1;
+        a[N-1][i] = 1;
+    }
+
+    // number of routes to reach to point [r-1][r-1]
+    // is sum of number of ways to reach point [N-2][N-1] and [N-1][N-2]
+    // Fill the whole grid with num of routes possible using the above rule
+    for(i=N-2; i>=0; i--)
+    {
+        for(j=i; j>=0; j--)
+        {
+            a[j][i] = a[j][i+1] + a[j+1][i];
+            a[i][j] = a[i][j+1] + a[i+1][j];
+        }
+    }
+
+    return a[0][0];
+}
+
+struct node 
+{
+    int X;
+    int Y;
+    struct node *leftChild;
+    struct node *rightChild;
+};
+
+void numOfRoutes2(struct node *root, int *numRoutes)
+{
+    struct node *p = NULL, *q = NULL;
+    if(root->X == K && root->Y == K)
+    {
+        // completed one route
+        (*numRoutes)++;
+        return;
+    }
+
+    // increment x axis and add to leftChild of root
+    if((root->X + 1) <= K)
+    {
+        struct node *p = (struct node *)malloc(sizeof(struct node));
+        p->X = root->X + 1;
+        p->Y = root->Y;
+        p->leftChild = NULL;
+        p->rightChild = NULL;
+
+        root->leftChild = p;
+        numOfRoutes2(root->leftChild, numRoutes);
+    }
+
+    // increment x axis and add to leftChild of root
+    if((root->Y + 1) <= K)
+    {
+        struct node *q = (struct node *)malloc(sizeof(struct node));
+        q->X = root->X;
+        q->Y = root->Y + 1;
+        q->leftChild = NULL;
+        q->rightChild = NULL;
+
+        root->rightChild = q;
+        numOfRoutes2(root->rightChild, numRoutes);
+    }
+}
+
+// Although this printing could have been done inside function numOfRoutes2 as well
+// But for clarity and seperating functions performed
+// I am splitting this in two functions
+void printAllTheRoutes(struct node *root, int count)
+{
+    static struct node *a[LEN] = {NULL};
+    int i = 0;
+    if(root)
+    {
+        a[count] = root;
+        if(root->X == K && root->Y == K)
+        {
+            for(i=0; a[i] && i<LEN; i++)
+            {
+                printf("(%d,%d),",a[i]->X,a[i]->Y);
+            }
+            printf("\n");
+        }
+        printAllTheRoutes(root->leftChild, count+1);
+        printAllTheRoutes(root->rightChild, count+1);
+
+    }
+}
+
+int main()
+{
+    int numRoutes = 0;
+    printf("num of routes in grid:%d\n",numOfRoutes1());
+
+    struct node *root = (struct node *)malloc(sizeof(struct node));
+    root->X = 0;
+    root->Y = 0;
+    root->leftChild = NULL;
+    root->rightChild = NULL;
+
+    numOfRoutes2(root, &numRoutes);
+
+    printf("num of routes in grid:%d\n",numRoutes);
+
+    printAllTheRoutes(root,0);
+
+    return 0;
+}

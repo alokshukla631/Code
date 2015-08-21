@@ -1,0 +1,99 @@
+#include <stdafx.h>
+// program to convert a dll (doubly linked list) in to a balanced binary searched tree
+#include <stdio.h>
+#include <string.h>
+
+
+void add(char sum[], char number[], int len)
+{
+     int i = len-1;
+    int j = 0;
+    int r = 0;
+    char c = '\n';
+    while(i >= 0)
+    {
+        c = sum[j] ? (sum[j] + number[i] - '0') : number[i];
+        sum[j] = c;
+        r = j;
+        while(c > '9')
+        {
+            sum[r] = c - 10;
+            r++;
+            c = sum[r] ? (sum[r] + 1) : '1';
+            sum[r] = c;
+        }
+        i--;
+        j++;
+        
+    }
+}
+
+void reverse(char sum[])
+{
+    int i = 0;
+    int j = 0;
+    int temp = 0;
+    // find length
+    while(sum[i])
+    {
+        i++;
+    }
+    i--;
+
+    while(j < i)
+    {
+        //swap sum[j] and sum[i]
+        temp = sum[j];
+        sum[j] = sum[i];
+        sum[i] = temp;
+        j++;
+        i--;
+    }
+}
+int main() {
+
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */  
+    int numOfNumbers = 0;
+    char numbers[10][12];
+    int len[10];
+    char sum[13];
+    memset(numbers, 0, sizeof(numbers));
+    memset(sum, 0, sizeof(sum));
+    memset(len, 0, sizeof(len));
+    int i = 0, j = 0;
+    char c;
+    scanf("%d",&numOfNumbers);
+    c = getchar();
+
+    // read the numbers and save them
+    // Although saving is not required and we can directly add them
+    // but for sake of clarity i am saving them
+    while((c = getchar()) != '\n')
+    {
+        if(c != ' ')
+        {
+            numbers[i][j] = c;
+            j++;
+        }
+        else
+        {
+            numbers[i][j] = '\n';
+            len[i] = j;
+            j = 0;
+            i++;
+        }
+    }
+    len[i] = j;
+
+    for(i=0; i < numOfNumbers; i++)
+    {
+        add(sum, numbers[i], len[i]);
+    }
+
+    // reverse sum
+    reverse(sum);
+
+    printf("%s",sum);
+    
+    return 0;
+}

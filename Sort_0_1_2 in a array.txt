@@ -1,0 +1,122 @@
+#include <stdafx.h>
+// program to convert a dll (doubly linked list) in to a balanced binary searched tree
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+void sort(int a[], int len)
+{
+    int i=0, j=0, k=len-1; // i is pointer for 0, j is pointer for 1 and k is pointer for 2
+    int count = 0;
+    int temp = 0;
+    int s = 0;
+
+    while(i < k && j < k)
+    {
+        while(a[i] == 0)
+        {
+            i++;
+            count++;
+        }
+
+        while(a[j] == 1)
+        {
+            j++;
+            count++;
+        }
+
+        if(a[j] == 0)
+        {
+            //swap a[i] and a[j]
+            temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+            i++;
+            j++;
+            continue;
+        }
+
+        while(a[k] == 2)
+        {
+            k--;
+            count++;
+        }
+
+        // swap a[j] and a[k]
+        temp = a[j];
+        a[j] = a[k];
+        a[k] = temp;
+    }
+    printf("count = %d\n",count);
+}
+
+void sortChar(char a[], int len)
+{
+    int i=0, j=len-1, k=len-1; // i is pointer for small case letters, j is pointer for space and k is pointer for upper case letters
+    int count = 0;
+    int temp = 0;
+    int lastSwap = 0;
+
+    while(k > i && j > i)
+    {
+        while(a[k] >= 'A' && a[k] <= 'Z')
+        {
+            k--;
+            count++;
+        }
+
+        while(a[j] == ' ')
+        {
+            j--;
+            count++;
+        }
+
+        if(a[j] >= 'A' && a[j] <= 'Z')
+        {
+            //swap a[k] and a[j]
+            temp = a[k];
+            a[k] = a[j];
+            a[j] = temp;
+            k--;
+            j--;
+            continue;
+        }
+
+        while(a[i] >= 'a' && a[i] <= 'z')
+        {
+            i++;
+            count++;
+        }
+
+        // swap a[i] and a[j]
+        temp = a[j];
+        a[j] = a[i];
+        a[i] = temp;
+    }
+    printf("count = %d\n",count);
+}
+
+int main() 
+{
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    int a[10] = {1,1,0,0,2,2,0,1,0,2};
+    char b[10] = {'a','c','B','D','i','v','l','M','Y',' '};
+    int i=0;
+    sort(a,10);
+    sortChar(b,10);
+
+    for(i=0; i<10; i++)
+    {
+        printf("%d,",a[i]);
+    }
+
+    printf("\n");
+    for(i=0; i<10; i++)
+    {
+        printf("%c,",b[i]);
+    }
+
+    return 0;
+}
+

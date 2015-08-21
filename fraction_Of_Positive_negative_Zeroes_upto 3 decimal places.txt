@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+int main() 
+{
+
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    int numOfNumbers = 0;
+    int a = 0;
+    int positive = 0; // number of positive numbers
+    int negative = 0; // number of negative numbers
+    int zero = 0; // number fo zeroes
+    int total = 0;
+    int i = 0;
+    scanf("%d",&numOfNumbers);
+
+    for(i=0; i<numOfNumbers; i++)
+    {
+        scanf("%d",&a);
+        if(a > 0)
+        {
+            positive++;
+        }
+        else if(a < 0)
+        {
+            negative++;
+        }
+        else
+        {
+            zero++;
+        }
+        total++;
+    }
+
+    printf("%.3f\n%.3f\n%.3f",(float)positive/total,(float)negative/total,(float)zero/total);
+    
+    return 0;
+}

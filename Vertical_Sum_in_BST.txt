@@ -1,0 +1,104 @@
+// Vertical sum in a tree
+#include <stdafx.h>
+#include <stdlib.h>
+
+#define N 10
+
+struct node
+{
+    int data;
+    struct node *leftChild;
+    struct node *rightChild;
+};
+
+void addNode(struct node **root, int num)
+{
+    struct node *temp = NULL, *r = *root, *p = NULL;
+
+    // create new node
+    temp = (struct node *)malloc(sizeof(struct node));
+    temp->data = num;
+    temp->leftChild = NULL;
+    temp->rightChild = NULL;
+
+    if(*root == NULL)
+    {
+        // first node
+        *root = temp;
+        return;
+    }
+
+    // find the right place for the node temp
+    while(r)
+    {
+        p = r;
+        r = r->data > num ? r->leftChild : r->rightChild;
+    }
+
+    if(p->data > num)
+    {
+        p->leftChild = temp;
+    }
+    else
+    {
+        p->rightChild = temp;
+    }
+}
+
+void inOrder(struct node *root, int count, int *maxLeft, int *maxRight)
+{
+    if(root)
+    {
+        *maxLeft = *maxLeft > count ? count : *maxLeft;
+        *maxRight = *maxRight < count ? count : *maxRight;
+        inOrder(root->leftChild, count-1, maxLeft, maxRight);
+        printf("%d,",root->data);
+        inOrder(root->rightChild, count+1, maxLeft, maxRight);
+    }
+}
+
+
+void verticalSum(struct node *root, int b[], int count, int maxLeft)
+{
+    if(root)
+    {
+        verticalSum(root->leftChild, b, count-1, maxLeft);
+        b[count+maxLeft] += root->data;
+        verticalSum(root->rightChild, b, count+1, maxLeft);
+    }
+    
+}
+int main()
+{
+    int a[N] = {3,45,67,23,12,8,90,24,5,19};
+    int b[N] = {0};
+    int i = 0;
+    struct node *root = NULL;
+    int count = 0, maxLeft = 0, maxRight = 0;
+    int len = 0;
+
+    for(i=0; i<N; i++)
+    {
+        addNode(&root, a[i]);
+    }
+
+    //print the tree and count the scope from left to right
+    inOrder(root, count, &maxLeft, &maxRight);
+    printf("\n");
+    printf("maxLeft:%d maxRight:%d\n", maxLeft, maxRight);
+
+    len = maxRight-maxLeft+1;
+    verticalSum(root, b, count, 0-maxLeft);
+
+    printf("Vertical Sum:\n");
+    for(i=0; i<len; i++)
+    {
+        printf("%d,",b[i]);
+    }
+    printf("\n");
+
+    
+
+    return 0;
+}
+

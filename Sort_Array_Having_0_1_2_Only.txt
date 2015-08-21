@@ -1,0 +1,80 @@
+// sort an array having only 0, 1 and 2 in single pass
+#include <stdafx.h>
+
+#define N 20
+
+//function to sort this array in single pass
+void sort(int a[])
+{
+    int i=0, j=0, k=N-1; // i points to position of 0, j points to position of 1 and k points to position of 2
+    int temp = 0;
+    int count = 0;
+
+    while(a[i] == 0)
+    {
+        i++;
+        count++;
+    }
+
+    j = i;
+
+    while(j < k)
+    {
+        while(a[i] == 0)
+        {
+            i++;
+            count++;
+        }
+
+        while(a[j] == 1)
+        {
+            j++;
+            count++;
+        }
+
+        if(a[j] == 0 && a[i] == 1) // swap a[i] with a[j]
+        {
+            temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+        }
+
+        if(a[j] == 2 && a[k] != 2) // swap a[k] and a[j]
+        {
+            temp = a[k];
+            a[k] = a[j];
+            a[j] = temp;
+        }
+
+        while(a[k] == 2)
+        {
+            k--;
+            count++;
+        }
+
+        if(a[j] == 2 && a[k] != 2) // swap a[k] and a[j]
+        {
+            temp = a[k];
+            a[k] = a[j];
+            a[j] = temp;
+        }
+    }
+    printf("count=%d\n",count);
+}
+
+int main()
+{
+    int i = 0;
+    int a[N] = {1,0,1,0,1,2,0,1,2,0,2,2,2,0,0,0,1,1,2,0};
+
+    sort(a);
+
+    for(i=0; i<N; i++)
+    {
+        printf("%d,",a[i]);
+    }
+
+    printf("\n");
+
+    return 0;
+}

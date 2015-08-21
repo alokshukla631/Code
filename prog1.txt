@@ -1,0 +1,44 @@
+#include <stdio.h>
+// we are given an array of numbers
+// Find the sum of all the multiples of numbers of this array below 1000
+
+#include <stdio.h>
+
+#define LEN 2
+int main()
+{
+    int arr[10] = {3, 5};
+    int sum = 0;
+    int multiple = 1;
+    int start = 0;
+    int sumOfMultiples = 0;
+    int i = 0;
+    
+    // sum multiples of all numbers
+    // including common numbers as well
+    for(i=0; i<LEN; i++)
+    {
+        multiple = arr[i];
+        while(multiple < 1000)
+        {
+            sum += multiple;
+            multiple += arr[i];
+        }
+    }
+    
+    // find sum of all common multiples
+    for(start=0; start < LEN; start++)
+    {
+        for(i=start+1; i < LEN; i++)
+        {
+            multiple = arr[start]*arr[i];
+            while(multiple < 1000)
+            {
+                sumOfMultiples += multiple;
+                multiple += arr[start]*arr[i];
+            }
+        }
+    }
+    
+    printf("%d\n", sum-sumOfMultiples);
+}
